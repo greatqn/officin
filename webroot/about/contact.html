@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<meta http-equiv="Content-Language" content="zh-cn"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="Description" content="iwebSNS" />
+<meta name="Keywords" content="iwebSNS" />
+<meta name="author" content="" />
+<meta name="robots" content="all" />
+<title>联系我们 - 翱胜网</title>
+<link rel="stylesheet" href="../skin/default/jooyea/css/layout.css" />
+<link rel="stylesheet" href="css/footpage.css" />
+<script type="text/javascript" src="../skin/default/js/jooyea.js"></script>
+<script type="text/javascript" src="../servtools/ajax_client/ajax.js"></script>
+<script type="text/javascript" language="javascript" src="../servtools/dialog/zDialog.js"></script>
+
+<script language="javascript">
+function goLogin(){
+	Dialog.confirm("登录后才能执行操作,现在登录？",function(){top.location="index.php";});
+}
+
+function act_report_sed(){
+	var reason_str=document.getElementById("reason").value;
+	var location_str = "w:"+window.location;
+	//console.log(window.location);
+	//console.log(typeof(frame_content));
+	if(typeof(frame_content)!="undefined"){
+	  //console.log(frame_content.location);
+	  location_str += ";fc:"+frame_content.location;
+	}
+	if(trim(reason_str)){
+		var ajax_act_report=new Ajax();
+		ajax_act_report.getInfo("../do.php?act=report_add_sed","post","app","reason="+reason_str+"&location_str="+escape(location_str),function(c){act_report_sed_callback(c)});
+	}else{
+		Dialog.alert('您还没有填写内容.');
+	}
+}
+function act_report_sed_callback(content){
+
+	if(content=="true"){
+		alert('提交成功');
+	}else{
+		alert(content);
+	}
+}
+	
+</script>
+</head>
+<body id="help" style="margin-top:0">
+<div class="container">
+<script language="javascript">
+function addBookMark()
+{
+    var nome_sito = "翱胜网";
+    var url_sito = "http://http://www.officin.com.cn/";
+    if ((navigator.appName == "Microsoft Internet Explorer") && (parseInt
+        (navigator.appVersion) >= 4))
+        window.external.AddFavorite(url_sito, nome_sito);
+    else if (navigator.appName == "Netscape")
+        window.sidebar.addPanel(nome_sito, url_sito, '');
+    else
+        parent.Dialog.alert("您的浏览器不允许脚本访问收藏夹，请手动添加！");
+}
+
+function setMyHomepage(url){   //  设置首页 
+		 if(!!(window.attachEvent && !window.opera)){
+				document.body.style.behavior = 'url(#default#homepage)';
+				document.body.setHomePage(url);
+		}else{
+			if(window.clipboardData && clipboardData.setData){
+		        clipboardData.setData('text', url);
+		    }else{
+		         parent.Dialog.alert('您的浏览器不允许脚本访问剪切板，请手动设置！');
+		    }
+		}
+}
+</script>
+<div id="header" style="height:88px;">
+	<div style="margin:0px 0 0 10px;padding:10px 0 0 0;">
+	<a href="../index.php" class="left"><div id="logo" >&nbsp;</div></a>
+	</div>
+	<div class="clear"></div>
+	<div>
+		<div id="logotitle" class="left">The Social Network For Job</div>
+		<h2 class="title left" style="color:#fff;">为工作而存在的社交网络</h2>
+		<div class="right" style="margin-top: -16px;display:inline;">
+			<table style='text-align:left;' width="100px">
+			<tr>
+			<td width="45%" style="word-wrap : break-word; overflow:hidden; "><a href="../index.php" title="注册"><div class="icon_small icon_login_1"></div></a></td>
+			<td width="10%">&nbsp;</td>
+			<td width="45%"><a title="关于我们" href="about.html"><div class="icon_wp_small icon_about"></div></a></td>
+			</tr>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="clear"></div>
+
+
+<div class="wrapper">
+<div class="main">
+<div class="title"><h3>&nbsp;联系我们</h3></div>
+<div id="">
+<table style="margin:16px 0 0 0;">
+<tr>
+<td width="52px"></td>
+<td width="300px">
+<div id="cont_1">
+<p class="ccolor">
+		<a href="javascript:void(0);" onclick="frame_content.location.href='{echo:$siteDomain;/}modules.php?app=buscard';return false;"  hidefocus="true"><span class="icon_big icon_weibo"></span></a>
+		<span class="info">加关注：OFFICIN翱胜网</span>
+	</p>
+	<p class="ccolor">
+		<a href="javascript:void(0);" onclick="frame_content.location.href='{echo:$siteDomain;/}modules.php?app=blog_list';return false;"  hidefocus="true"><span class="icon_big icon_email"></span></a>
+		<span class="info">邮件：suggestion@officin.com.cn</span>
+	</p>
+	<p class="ccolor">
+		<a href="javascript:void(0);" onclick="frame_content.location.href='{echo:$siteDomain;/}modules.php?app=msg_mbox';return false;"  hidefocus="true"><span class="icon_big icon_contact"></span></a>
+		<span class="info">手机：13824337707</span>
+	</p>
+</div>
+</td>
+<td ><div style="width:585px;height:288px;background-color:#5E9DFD;display:block;margin:0 0 0 23px;">
+<div class="clear">&nbsp;</div>
+<div style="padding:15px 10px">
+<table style="width:100%; ">
+<tr><td><span style="color:#fff;">欢迎留下你的宝贵意见或建议</span></td></tr>
+<tr><td><textarea  name="reason" id="reason" style="width:99%; height: 198px;"></textarea></td></tr>
+<tr><td style="text-align:right;padding:7px 0 0 0;"><input type="button" value="发  送" onclick="act_report_sed();" style="width:100px;height:25px;background-color:#0063B0;border:1px #cccccc solid;color:#fff;" /></td></tr>
+
+</table>
+</div>
+<p style="margin:10px auto ;text-align:center;">
+</p>
+<p style="padding:0 0 0 10px;">
+
+</p>
+</div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="foot">粤ICP备12038904号&nbsp;Copyright©2012 www.officin.com.cn</div>
+</body>
+</html>

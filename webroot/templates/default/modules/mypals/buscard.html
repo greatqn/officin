@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>{echo:$user_name;/}的个人首页-{echo:$siteName;/}</title>
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/layout.css"/>
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/card.css?t=20130327"/>
+<link rel="stylesheet" type="text/css" href="servtools/menu_pop/menu_pop.css"/>
+<script type='text/javascript' src="servtools/ajax_client/ajax.js"></script>
+<SCRIPT language=JavaScript src="skin/default/js/jooyea.js"></SCRIPT>
+<script type="text/javascript" language="javascript" src="servtools/dialog/zDialog.js"></script>
+<script type="text/javascript" language="javascript" src="servtools/dialog/zDrag.js"></script>
+<?php echo $is_self=='Y' ? "<script type='text/javascript' src='servtools/menu_pop/group_user.php'></script>" : "";?>
+<script type='text/javascript' src="servtools/menu_pop/menu_pop_refer.js"></script>
+<script type="text/javascript">
+function show_sort_list(obj,p_id,old_id){
+	var sortwin=document.createElement("div");
+	var parentnode = document.getElementById('mypals_iframe');
+	var t=obj.offsetTop;
+	var l=obj.offsetLeft;
+	while(obj=obj.offsetParent){
+		t+=obj.offsetTop;
+		l+=obj.offsetLeft;
+	}
+  {sta:if($mp_sort_list)[exc]}
+	sortwin.id = "sort_select_"+p_id;
+	sortwin.className = "sort_select";
+	sortwin.style.top = (t+15) + 'px';
+	sortwin.style.left = l + 'px';
+	{sta:foreach($mp_sort_list as $val)[loop]}
+		{sta:$sort_str.="<li><a href='javascript:void(0);' onclick=changeSort(\"+p_id+\",".$val['id'].",this,\"+old_id+\");>".$val['name']."</a></li>";/}
+	{end:foreach/}
+	sortwin.innerHTML = "<div class='sort_sel_box'><ul>{echo:$sort_str;/}</ul></div>";
+	parentnode.appendChild(sortwin);
+	sortwin.focus();
+	{end:if/}
+	if(document.all){
+		sortwin.onblur=function(){window.setTimeout(function(){parentnode.removeChild(sortwin);},250);}
+	}else{
+		sortwin.onclick=function(){window.setTimeout(function(){parentnode.removeChild(sortwin);},50);}
+	}
+}
+
+function changeSort(p_id,sort_id,obj,old_id){
+	var old_value=document.getElementById(p_id+'_old_value').value;
+	if(navigator.appName.indexOf("Explorer") > -1){
+		var sortName = obj.innerText;
+	}else{
+		var sortName = obj.textContent;
+	}
+	var changeSort=new Ajax();
+	changeSort.getInfo("do.php?act=pals_change&id="+p_id,"post","app","name="+sortName+"&sort_id="+sort_id+"&old_sort_id="+old_value,function(c){document.getElementById('sort_name_'+p_id).innerHTML = "<span class='sort'>"+sortName+"</span>";document.getElementById(p_id+'_old_value').value=sort_id;});
+}
+function changeStyle(obj,p_id){
+	obj.className = 'hover';
+}
+function recoverStyle(obj,p_id){
+	obj.className = '';
+}
+
+function shownode(id){
+	var changeSort=new Ajax();
+	changeSort.getInfo("do.php?act=pals_node&op=show&palid="+id,"get","app","",function(c){shownode_dialog(c,id);});
+}
+function shownode_dialog(c,id){
+	var diag = new Dialog();
+	diag.Width = 300;
+	diag.Height = 150;
+	diag.Top="50%";
+	diag.Left="50%";
+	diag.Title = "备注";
+	diag.InnerHtml= '<div class="report_notice"><textarea style="resize: none;max-width:290px;max-height:150px;width:290px;height:150px;overflow-x:hidden;overflow-y:hidden" id="shownode_'+id+'">'+c+'</textarea></div>';
+	diag.OKEvent = function(){savenode(id);diag.close();};
+	diag.show();
+}
+function savenode(id){
+	var nodetxt = document.getElementById('shownode_'+id);
+	var changeSort=new Ajax();
+	changeSort.getInfo("do.php?act=pals_node&op=edit&palid="+id,"get","app","palnote="+nodetxt.value,function(c){});
+}
+function showreferred(e,obj,t,id){
+
+	var diag = new Dialog();
+	diag.Width = 400;
+	diag.Height = 250;
+	diag.Top="50%";
+	diag.Left="50%";
+	diag.Title = "您希望将"+obj.getAttribute("cname")+"引荐给以下哪位";
+	var htmlselect = create_menu_top(menu_pop_data);
+	diag.InnerHtml= '<div class="report_notice"><div id="menu_top_yj" class="menu_top_pop_layer" style="width:100%">'+htmlselect+'</div><textarea style="resize: none;max-width:388px;max-height:150px;width:388px;height:150px;overflow-x:hidden;overflow-y:hidden" id="reason_'+id+'">引荐理由:</textarea></div>';
+	diag.OKEvent = function(){act_referred(id);diag.close();};
+	diag.show();
+}
+function act_referred(fromid){
+	var toids =document.getElementById('privacy').value;;
+	var txtTalk = document.getElementById('reason_'+fromid).value;
+	//console.log(toids);
+	//console.log(txtTalk);
+	var changeSort=new Ajax();
+	changeSort.getInfo("do.php?act=pals_referred&toids="+toids+"&fromid="+fromid,"get","app","note="+txtTalk,function(c){alert(c);});
+}
+</script>
+<style type="text/css">
+	.ct ul li{float:left}
+	.ct ul {padding:0 0 0 0 };
+</style>
+</head>
+<body>
+<div class="container">
+  {inc:require("uiparts/cardheader.php");/}
+  <div class="wrapper">
+    <div class="main">
+      <div class="main_wrap">
+          <div id="bigpart" class="bigpart">
+          	<div class="bigpart_wrap">
+<div id="iframecontent" style="background:#FAFAFA" >
+  <div class="create_button">
+<div class="share_box right">
+	    <form method='post' action='' id='search_pals'>
+	    	<input class="small-text" type='text' maxlength='20' value='{echo:$search_name;/}' id='search_name' name='search_name' style="color:#333; background-image:nonel; background-color:#fff;" AUTOCOMPLETE='off' />
+				<span class="share_button" onclick="document.getElementById('search_pals').submit();">{echo:lp{mp_search};/}</span>
+	  	</form>
+	</div>
+</div>
+  <h2 class="app_friend">{echo:lp{mp_mypals};/}</h2>
+  <div class="tabs">
+    <ul>
+    {sta:if(empty($sort_id))[exc]}{sta:$select='class="active"';/}{end:if/}
+      <li {echo:$select;/}><a href="modules.php?app=buscard&sort_id=" >{echo:lp{mp_all};/}</a></li>
+      {sta:foreach($mp_sort_list as $val)[loop]}
+    	{sta:if($sort_id==$val['id'])[exc]}{sta:$select='class="active"';/}{end:if/}
+    	{sta:if($sort_id!=$val['id'])[exc]}{sta:$select='';/}{end:if/}
+    	<li {echo:$select;/}><a href="modules.php?app=buscard&sort_id={echo:$val['id'];/}" >{echo:$val['name'];/} ({echo:$val['count'];/})</a></li>
+      {end:foreach/}
+    </ul>
+  </div>
+	<!--  
+    <select id="sort_id" class="tleft" onchange="javascript:location.href='modules.php?app=mypals&sort_id='+this.value">
+    	<option value='' 'selected'>{echo:lp{mp_all};/}</option>
+    	{sta:foreach($mp_sort_list as $val)[loop]}
+    	{sta:if($sort_id==$val['id'])[exc]}{sta:$select='selected';/}{end:if/}
+    	{sta:if($sort_id!=$val['id'])[exc]}{sta:$select='';/}{end:if/}
+    	<option value='{echo:$val['id'];/}' {echo:$select;/}>{echo:$val['name'];/} ({echo:$val['count'];/})</option>
+    	{end:foreach/}
+    </select>
+    -->
+	
+  <div id="mypals_iframe">
+	{sta:if($mp_list_rs)[exc]}
+		<div class="buscard_list">
+		{sta:foreach($az_list_rs as $rd_az=>$rs_az)[loop]}
+		<span id="sort_{echo:$rd_az;/}" style="font-size:16pt; font-weight : bold; float:left;">{echo:$rd_az;/}</span>
+		<!-- card list begin-->
+		<ul id="tab0_content0" class="user_list">
+				{sta:foreach($rs_az as $rs)[loop]}
+				{sta:$psort_name=$rs['pals_sort_name']?$rs['pals_sort_name']:lp{mp_select_sort};/}
+				<li >
+<table width="100%" border="0">
+  <tr>
+    <td>
+    <a target="_blank" href="home.php?h={echo:$rs["pals_id"];/}">
+<div class="left" style="text-align:center;width:302px;margin:auto;" id="my_card_content">
+<!-- 名片输出 -->
+{echo:api_proxy("user_card_build_template_byuserid",$rs["pals_id"]);/}
+</div></a>
+	</td>
+    <td>
+<div class="left" style="height:180px">
+<dl>
+<input type='hidden' value='{echo:$rs["pals_sort_id"];/}' id='{echo:$rs["pals_id"];/}_old_value' />
+<dd><a href="javascript:void(0);" onclick='show_sort_list(this,{echo:$rs["pals_id"];/},{echo:$rs["pals_sort_id"];/})' hidefocus="true" id='sort_name_{echo:$rs["pals_id"];/}'><span class="sort">{echo:$psort_name;/}</span></a></dd>
+<dd><a class="" href="javascript:void(0);"  onclick='shownode({echo:$rs["pals_id"];/});' title='{echo:str_replace("{he}",get_TP_pals_sex($rs["pals_sex"]),lp{mp_node});/}'>备注</a></dd>
+<dd><a class="" href='modules.php?app=msg_gbox&2id={echo:$rs["pals_id"];/}' target="frame_content" title='{echo:str_replace("{he}",get_TP_pals_sex($rs["pals_sex"]),lp{mp_scrip});/}'>留言</a></dd>
+<dd><a class="" href='javascript:void(0);' onclick='showreferred(event,this,0,{echo:$rs["pals_id"];/});' id="isns_blog:14:!all" cname='{echo:$rs["cn_name"];/}' title='{echo:str_replace("{he}",get_TP_pals_sex($rs["pals_sex"]),lp{mp_referred});/}'>引荐</a></dd>
+<dd><a class="" title="{echo:lp{mp_del};/}" href="do.php?act=del_mypals&mypals_id={echo:$rs['pals_id'];/}&sort_id={echo:$rs['pals_sort_id'];/}" onclick='return confirm("{echo:lp{mp_a_del};/}")'>删除</div></a></dd>
+</dl>
+</div>
+	</td>
+  </tr>
+</table>
+					</li>
+				{end:foreach/}
+			</ul>
+		<!-- card list end-->
+		<table   width="100%"   style= "border-top:3px solid #0080FF "   cellspacing=0   cellpadding=0> <tr> <td>&nbsp;</td> </tr> </table>
+		{end:foreach/}
+		</div>
+	{end:if/}
+  </div>
+<div class="clear"></div>
+
+<div class="guide_info {echo:$none_data;/}">{echo:$show_none_str;/}</div>
+</div>
+<div class="btn_gotop">
+
+{sta:foreach($az_list_rs as $rd_az=>$rs_az)[loop]}
+<a href="#sort_{echo:$rd_az;/}"><span>{echo:$rd_az;/}</span></a><br/>
+{end:foreach/}
+</div>
+			</div>
+		  </div>
+	   </div>
+     </div>
+  <div class="menu">{inc:require("uiparts/cardleft.php");/}</div>
+ </div>
+  {inc:require("uiparts/footor.php");/}
+  <input type='hidden' name='privacy' id='privacy' value='' />
+</body>
+</html>

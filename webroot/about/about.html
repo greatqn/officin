@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<meta http-equiv="Content-Language" content="zh-cn"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="Description" content="iwebSNS" />
+<meta name="Keywords" content="iwebSNS" />
+<meta name="author" content="" />
+<meta name="robots" content="all" />
+<title>关于我们 - 翱胜网</title>
+<link rel="stylesheet" href="../skin/default/jooyea/css/layout.css" />
+<link rel="stylesheet" href="css/footpage.css" />
+<script type="text/javascript" language="javascript" src="servtools/dialog/zDrag.js"></script>
+<script type="text/javascript" language="javascript" src="servtools/dialog/zDialog.js"></script>
+
+<script language="javascript">
+function goLogin(){
+	Dialog.confirm("登录后才能执行操作,现在登录？",function(){top.location="index.php";});
+}
+</script>
+</head>
+<body id="help" style="margin-top:0">
+<div class="container">
+<script type="text/javascript" language="javascript" src="skin/default/js/jy.js"></script>
+<script language="javascript">
+function addBookMark()
+{
+    var nome_sito = "翱胜网";
+    var url_sito = "http://http://www.officin.com.cn/";
+    if ((navigator.appName == "Microsoft Internet Explorer") && (parseInt
+        (navigator.appVersion) >= 4))
+        window.external.AddFavorite(url_sito, nome_sito);
+    else if (navigator.appName == "Netscape")
+        window.sidebar.addPanel(nome_sito, url_sito, '');
+    else
+        parent.Dialog.alert("您的浏览器不允许脚本访问收藏夹，请手动添加！");
+}
+
+function setMyHomepage(url){   //  设置首页 
+		 if(!!(window.attachEvent && !window.opera)){
+				document.body.style.behavior = 'url(#default#homepage)';
+				document.body.setHomePage(url);
+		}else{
+			if(window.clipboardData && clipboardData.setData){
+		        clipboardData.setData('text', url);
+		    }else{
+		         parent.Dialog.alert('您的浏览器不允许脚本访问剪切板，请手动设置！');
+		    }
+		}
+}
+</script>
+<div id="header" style="height:88px;">
+	<div style="margin:0px 0 0 10px;padding:10px 0 0 0;">
+	<a href="../index.php" class="left"><div id="logo" >&nbsp;</div></a>
+	</div>
+	<div class="clear"></div>
+	<div>
+		<div id="logotitle" class="left">The Social Network For Job</div>
+		<h2 class="title left" style="color:#fff;">为工作而存在的社交网络</h2>
+		<div class="right" style="margin-top: -16px;display:inline;">
+			<table style='text-align:left;' width="100px">
+			<tr>
+			<td width="45%" style="word-wrap : break-word; overflow:hidden; "><a href="../index.php" title="注册"><div class="icon_small icon_login_1"></div></a></td>
+			<td width="10%">&nbsp;</td>
+			<td width="45%"><a href="contact.html" title="联系我们"><div class="icon_small icon_msg"></div></a></td>
+			</tr>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="wrapper"><div class="main">
+<div class="title"><h3>&nbsp;关于我们</h3></div>
+<p>常备上厚厚的数盒名片与客户交换，但在急需时却发现寻找其中一位如同大海捞针；</p>
+
+<p>常望着长串的社交粉丝和通讯好友，但却发觉对打开客户资源和工作人脉毫无帮助；</p>
+
+<p>常为一份新报价新服务熬夜敲打上百封邮件告知客户，但到头却石沉大海渺无音讯；</p>
+
+<p>常对远在天边的虚拟好友动态了如指掌，但却对身边的同事伙伴一无所知形如陌路。</p>
+
+<p>能想象么，你每天的工作生命里都充斥着这样的场景？</p>
+
+<p>Officin的使命，就是让这些统统都见鬼去！</p>
+
+<p>你的工作，应该是充满热情、创造和快乐的，而不是被封闭、重复和低效的无用功所占据和消磨的；你的工作，应该是你人生重要的一部分，是你价值体现的机会，是你才华施展的舞台，是你快乐生活的支持；你的工作，应该是为你和你爱的人提供保障和温暖，而不是一次又一次地挤兑掉你们的晚餐、电影和时光。我们相信，你一定也为这样的工作所期盼过、努力过、奋斗过，或许还在用父辈们的寄语鞭策自己再勤奋点再刻苦点再吃苦点。但在二十一世纪的今天，为什么不在这些美德上再加上一点创新，一点动力呢？在这里，你可以体验到这一份改变，以一种全新的方式维系和拓展人脉网络，构建高效私密的工作平台，让工作重新热起来，绽放出属于你的光彩。</p>
+
+<p>当阿姆斯特朗说“这是个人的一小步，却是人类的一大步”时，他为世界打开了一扇通往太空新的门。而今天，我们希望在Officin上的一小步，能有幸成为你工作的一大步，也为你的人生打开一扇新的门。这，就是每位Officin人的景愿和理想！</p>
+</div>
+
+<div class="foot">粤ICP备12038904号&nbsp;Copyright©2012 www.officin.com.cn</div>
+</body>
+</html>

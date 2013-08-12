@@ -1,0 +1,48 @@
+<script type="text/javascript" language="javascript" src="skin/default/js/jy.js"></script>
+<script language="javascript">
+function addBookMark()
+{
+    var nome_sito = "{echo:$siteName;/}";
+    var url_sito = "{echo:get_site_domain();/}";
+    if ((navigator.appName == "Microsoft Internet Explorer") && (parseInt
+        (navigator.appVersion) >= 4))
+        window.external.AddFavorite(url_sito, nome_sito);
+    else if (navigator.appName == "Netscape")
+        window.sidebar.addPanel(nome_sito, url_sito, '');
+    else
+        parent.Dialog.alert("{echo:lp{pu_house_wrong};/}");
+}
+
+function setMyHomepage(url){   //  设置首页 
+		 if(!!(window.attachEvent && !window.opera)){
+				document.body.style.behavior = 'url(#default#homepage)';
+				document.body.setHomePage(url);
+		}else{
+			if(window.clipboardData && clipboardData.setData){
+		        clipboardData.setData('text', url);
+		    }else{
+		         parent.Dialog.alert('{echo:lp{ah_browser_clipboard};/}');
+		    }
+		}
+}
+</script>
+<div id="header">
+	<div>
+	<a href="index.php" class="left"><div id="logo" >&nbsp;</div></a>
+	</div>
+	<div class="clear"></div>
+	<div>
+		<div id="logotitle" class="left">The Social Network For Job</div>
+		<h2 class="title left">为工作而存在的社交网络</h2>
+		<div class="right" style="margin-top: -16px;display:inline;">
+			<table style='text-align:left;' width="100px">
+			<tr>
+			<td width="45%" style="word-wrap : break-word; overflow:hidden; "><a href="about/about.html" title="关于我们"><div class="icon_small icon_about"></div></a></td>
+			<td width="10%">&nbsp;</td>
+			<td width="45%"><a href="about/contact.html" title="联系我们"><div class="icon_small icon_msg"></div></a></td>
+			</tr>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="clear"></div>

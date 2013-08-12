@@ -1,0 +1,42 @@
+<div class="mainhead" id="header" style="height:59px">
+
+	<div id="headsearch" class="left">
+		<h1 class="left"><a title="" href="main.php">
+	    <div id="logo" style="margin:7px 0 0 7px;width:173px" >&nbsp;</div>
+	    </a>
+	    </h1>
+	    <div class="schbox">
+	        <form class="search_box" action="main.php" target="_blank" onsubmit="clear_def(this,'{echo:lp{ah_enter_name};/}');">
+	            <input id="searchtop_input" maxlength='20' class="inpt" type="text" name='memName' value="{echo:lp{ah_enter_name};/}" onblur="inputTxt(this,'set');" onfocus="inputTxt(this,'clean');" />
+	            <input type="submit" id="sub" value="搜索 +" />
+	        	<input type='hidden' name='app' value='mypals_search_list' />
+	        </form>
+		</div>
+	</div>
+    <div id="userinfo" class="info">
+     	<div id="head">
+<a title="查看个人主页" target="_blank" href="home.php?h={echo:$user_info['user_id'];/}" class="main_header left"><img src="{echo:str_replace("_small","_small",$user_info['user_ico']);/}" /></a>
+<span>{echo:get_sess_username();/}</span>
+<a hidefocus="true" href="do.php?act=logout" class="main_out" >退出</a>
+		</div>
+    </div>
+
+</div>
+<script type='text/javascript'>
+	function inputTxt(obj,act)
+	{
+	  var str="{echo:lp{ah_enter_name};/}";
+	  if(obj.value==''&&act=='set')
+	  {
+	     obj.value=str;
+	     obj.style.color='#cccccc';
+	  }
+	  if(obj.value==str&&act=='clean')
+	  {
+	     obj.value='';
+	     obj.style.color='gray';
+	  }
+	}
+</script>
+<div class="clear"></div>
+

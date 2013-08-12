@@ -1,0 +1,42 @@
+
+body#help .main{line-height:22px;color:#000000;background-image:none;font-size:13px;background-color:#fff;}
+body#help #cont_1 p{color:#fff;font-size:13px;background-color:#5E9DFD;padding:13px 0 0 0;}
+body#help #cont_1 p span{margin:0px auto;}
+body#help #cont_1 p .info{margin:0px 0 0 15px;font-weight:bold;}
+
+.title {
+	text-align:left;
+	height:30px;
+	backg/round:url(../images/top_line.gif) no-repeat left bottom;
+}
+.title h3{
+	width:352px;height:32px;font-size:20px;color:#000;line-height:32px;font-weight:bold;
+	}
+#about {
+	margin-top:10px;
+	padding-top:290px;
+	background:url(../images/top_bg.gif) no-repeat center top;
+}
+#rivacy {
+	margin-top:10px;
+	padding-top:290px;
+	background:url(../images/privacy_bg.jpg) no-repeat center top;
+}
+.main p,ul {
+	text-align:left;
+	line-height:25px;
+	margin:10px;
+}
+.main p {
+	text-indent:20px;
+}
+li {
+	margin-left:40px;
+}
+b {
+	font-size:14px;
+	color:#4e4e4e;
+}
+body {
+    text-align: left;
+}

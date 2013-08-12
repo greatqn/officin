@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<base href='{echo:$siteDomain;/}' />
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/iframe.css"/>
+
+<script language=JavaScript src="skin/default/js/jquery-1.7.2.min.js"></script>
+<script language=JavaScript src="skin/default/js/iColorPicker.js"></script>
+<SCRIPT language=JavaScript src="servtools/ajax_client/ajax.js"></SCRIPT>
+
+</head>
+<script type="text/javascript">
+	function check_form(){
+		document.getElementById('birth_province').value=document.getElementById('s1').value;
+		document.getElementById('birth_city').value=document.getElementById('s2').value;
+		document.getElementById('reside_province').value=document.getElementById('r1').value;
+		document.getElementById('reside_city').value=document.getElementById('r2').value;
+	
+		var mood_text=trim(document.form.name.value);
+		if(mood_text==''){
+			parent.Dialog.alert("{echo:lp{u_no_name};/}");
+			return false;
+		}
+	}
+	function savecard(){
+	
+		var tempid = $("#m_template_card_id").val();
+		var img = $("#m_background_img").val();
+		//icp_ 由iColorPicker.js添加
+		var bgcolor = $("#icp_m_background_color").val();
+		if(bgcolor!="default"){
+			bgcolor = bgcolor.substring(1);
+		}
+		var corpcolor = $("#icp_m_corp_color").val();
+		if(corpcolor!="default"){
+			corpcolor = corpcolor.substring(1);
+		}
+		var ftcolor = $("#icp_m_font_color").val();
+		if(ftcolor!="default"){
+			ftcolor = ftcolor.substring(1);
+		}
+		var ajax_modify_template=new Ajax();
+		ajax_modify_template.getInfo("do.php","get","app","act=user_template_card&tempid="+tempid+"&img="+img+"&bgcolor="+bgcolor+"&ftcolor="+ftcolor+"&corpcolor="+corpcolor,"my_card_content");
+
+	}
+	function defaultcard(){
+		var ajax_modify_template=new Ajax();
+		ajax_modify_template.getInfo("do.php","get","app","act=user_template_card&tempid=defaultcard","my_card_content");
+	
+	}
+	
+</script>
+<body id="iframecontent">
+{sta:if($url_uid == $ses_uid)[exc]}
+<div class="create_button">
+	<a target="_blank" href="modules.php?app=set_mycard">{echo:lp{u_perfect_info};/}</a>
+</div>
+{end:if/}
+<h2 class="app_user">{echo:lp{u_business_card};/}</h2>
+{sta:if(!$show_type)[exc]}
+{sta:if(!$is_finish)[exc]}
+<div class="tabs">
+	<ul class="menu">
+	  <li class="active"><a href="modules.php?app=user_info" title="{echo:lp{u_info};/}">{echo:lp{u_info};/}</a></li>
+	  <li><a href="modules.php?app=user_ico" title="{echo:lp{u_icon};/}">{echo:lp{u_icon};/}</a></li>
+	  <li><a href="modules.php?app=user_pw_change" title="{echo:lp{u_pw};/}">{echo:lp{u_pw};/}</a></li>
+	  <li><a href="modules.php?app=user_dressup" title="{echo:lp{u_dressup};/}">{echo:lp{u_dressup};/}</a></li>
+	  <li><a href="modules.php?app=user_affair" title="{echo:lp{u_set_affair};/}">{echo:lp{u_set_affair};/}</a></li>
+	</ul>
+</div>
+<div class="rs_head">{echo:lp{u_fill};/}</div>
+{end:if/}
+		<form name="form" method="post" action="do.php?act=user_business_card&is_finish={echo:$is_finish;/}" onsubmit="return check_form();">
+			<table class="form_table" border="0">
+				<tr>
+					<th>中文名</th>
+					<td width="220px"><input type="text" value="{echo:$user_card['cn_name'];/}" name="card_cn_name" class="small-text3"></input>
+					 </td>
+					 <td colspan="2"><span>将显示于名片上，请使用真实姓名</span></td>
+				</tr>
+				<tr>
+					<th>英文名</th>
+					<td><input type="text" value="{echo:$user_card['en_name'];/}" name="card_en_name" class="small-text3"></input>
+					 </td>
+					 <td colspan="2"><span>请使用工作中常用的英文名</span></td>
+				</tr>
+				<tr>
+					<th>公司中文名</th>
+					<td><input type="text" value="{echo:$user_card['cn_corp_name'];/}" name="card_cn_corp_name" class="small-text3"></input>
+					 </td>
+					 <td colspan="2"><span>请填写完整公司名称</span></td>
+				</tr>
+				<tr>
+					<th>公司英文名</th>
+					<td><input type="text" value="{echo:$user_card['en_corp_name'];/}" name="card_en_corp_name" class="small-text3"></input>
+					 </td>
+				</tr>
+				<tr>
+					<th>地址</th>
+					<td colspan="3"><input type="text" value="{echo:$user_card['address'];/}" name="card_address" class="med-text2"></input>
+					 </td>
+				</tr>
+				<tr>
+					<th>电话</th>
+					<td><input type="text" value="{echo:$user_card['telephone'];/}" name="card_telephone" class="small-text"></input>
+					 &nbsp;&nbsp;&nbsp;手机</td>
+					 <td colspan="2"><input type="text" value="{echo:$user_card['mobile'];/}" name="card_mobile" class="small-text"></input>
+					 </td>
+				</tr>
+				<tr>
+					<th>传真</th>
+					<td><input type="text" value="{echo:$user_card['fax'];/}" name="card_fax" class="small-text"></input>
+					 &nbsp;&nbsp;&nbsp;邮编</td>
+					 <td colspan="2"><input type="text" value="{echo:$user_card['postcode'];/}" name="card_postcode" class="small-text"></input>
+					 </td>
+				</tr>
+				<tr>
+					<th>MSN</th>
+					<td><input type="text" value="{echo:$user_card['msn'];/}" name="card_msn" class="small-text"></input>
+					 &nbsp;&nbsp;&nbsp;QQ</td>
+					 <td colspan="2"><input type="text" value="{echo:$user_card['qq'];/}" name="card_qq" class="small-text"></input>
+					 </td>
+				</tr>
+				<tr>
+					<th>部门</th>
+					<td colspan="3"><input type="text" value="{echo:$user_card['department'];/}" name="card_department" class="med-text2"></input>
+					 </td>
+				</tr>
+				<tr>
+					<th>职务</th>
+					<td colspan="3"><input type="text" value="{echo:$user_card['roles'];/}" name="card_roles" class="med-text2"></input>
+					 </td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<input type="submit" name="profilesubmit2" value="{echo:lp{u_b_con};/}" class="regular-btn" />
+						<input type="reset" name="Submit" class="regular-btn" value="{echo:lp{u_b_can};/}" />
+					</td>
+				</tr>
+			</table>
+</form>
+	{end:if/}
+	{sta:if($show_type)[exc]}
+	<br/>
+	<div id="my_card_content" style="text-align:center;width:400px;margin:auto;">
+<!-- 名片输出 -->
+{echo:$my_user_business_card_text;/}
+</div>
+<br/>
+<hr/>
+{sta:if($is_self=="Y")[exc]}
+<br/>
+<input id="" type="button" value="还原" onclick="defaultcard();"></input>
+公司栏颜色:<input id="m_corp_color" class="iColorPicker" value="#{echo:$corp_color;/}" style="width:50px;"　></input>
+背景颜色:<input id="m_background_color" class="iColorPicker" " value="#{echo:$background_color;/}" style="width:50px;" ></input>
+字体颜色:<input id="m_font_color" class="iColorPicker" value="#{echo:$font_color;/}" style="width:50px;" ></input>
+<input id="" type="button" value="应用" onclick="savecard();"></input> 点击应用后生效
+{end:if/}
+{sta:if($is_self!="Y")[exc]}
+<p id='operate_{echo:$url_uid;/}'>
+	<a href='javascript:{echo:str_replace("{uid}",$url_uid,$send_join_js);/}'>{echo:str_replace("{he}",get_TP_pals_sex($user_row['user_sex']),lp{mp_add_mypals});/}</a>
+</p>
+{end:if/}    
+{end:if/}
+</body>
+</html>

@@ -1,0 +1,40 @@
+<div class="clear"></div>
+<div class="main_left">
+	<div class="hcolor" id="msgbox">
+<div class="td">
+<a href="javascript:void(0);" hidefocus="true"><span class="icon_small icon_info"></span>
+</a>
+</div>
+
+<div id="msginfo">
+<iframe onload="this.height=56" id="remind" style="width: 120px;" name="remind" src="modules.php?app=remind" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+</div>
+	</div>
+	<div class="clear"></div>
+	<div id="menu">
+<div class="td">
+<a href="javascript:void(0);" onclick="location.href='{echo:$siteDomain;/}main.php';return false;"  hidefocus="true" title="首页"><span class="icon_small icon_home"></span>
+</a>
+</div>
+<div class="td tip">
+<a href="javascript:void(0);" onclick="location.href='{echo:$siteDomain;/}main.php?app=mypals_invite';return false;"  hidefocus="true" title="邀请好友"><span class="icon_small icon_invite"></span>
+</a>
+</div>
+<div class="td tip">
+<a href="javascript:void(0);" onclick="location.href='{echo:$siteDomain;/}main.php?app=user_info';return false;"  hidefocus="true" title="设置"><span class="icon_small icon_user"></span>
+</a>
+</div>
+	</div>
+	<p class="ccolor">
+		<a href="javascript:void(0);"  hidefocus="true" title="名片夹"><span class="icon_menu icon_mcard"></span></a>
+		<br><span class="txt13b">名片夹 </span><span class="info">{echo:get_session('pals_count');/}张名片</span>
+	</p>
+	<p class="ccolor">
+		<a href="javascript:void(0);" onclick="location.href='{echo:$siteDomain;/}main.php?app=blog_list';return false;"  hidefocus="true"><span class="icon_menu icon_mmsg"></span></a>
+		<br><span class="txt13b">公告 </span><span class="info">{echo:get_session('blog_count');/}个公告</span>
+	</p>
+	<p class="ccolor">
+		<a href="javascript:void(0);" onclick="location.href='{echo:$siteDomain;/}main.php?app=msg_mbox';return false;"  hidefocus="true"><span class="icon_mtalk"></span></a>
+		<br><span class="txt13b">对话 </span><span class="info">{echo:get_session('msg_count');/}个对话</span>
+	</p>
+</div>

@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title></title>
+<base href='{echo:$siteDomain;/}' />
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/iframe.css"/>
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/message.css"/>
+<script language=JavaScript src="skin/default/js/jooyea.js"></script>
+<script type='text/javascript'>
+	function check_form(){
+		var mail_array=document.getElementsByName('attach[]');
+		var num=mail_array.length;
+		var check_num=0;
+		for(array_length=0;array_length<num;array_length++){
+			if(mail_array[array_length].checked==true){
+				check_num++;
+			}
+		}
+		if(check_num==0){
+			parent.Dialog.alert('{echo:lp{m_none_wrong};/}');
+		}else{
+			parent.Dialog.confirm('{echo:lp{m_del_ask};/}',function(){document.forms[0].submit();});
+		}
+	}
+	function select_item(type_value){
+		var mail_array=document.getElementsByName('attach[]');
+		var num=mail_array.length;
+		for(array_length=0;array_length<num;array_length++){
+				if(document.getElementById('state_'+array_length).value==type_value){
+					mail_array[array_length].checked='checked';
+				}else{
+					mail_array[array_length].checked='';
+				}
+		}
+	}
+	function sendmsg(){
+		var form1 = document.getElementsByName('form1')[0];
+		form1.submit();
+	}
+</script>
+
+</head>
+<body id="iframecontent">
+    <div class="create_button"><a href="modules.php?app=msg_mbox">所有{echo:lp{m_title};/}</a></div>
+    <h2 class="app_msgscrip item_bg">和{echo:$touser["user_name"];/}的对话</h2>
+<div class="B_private_talk" style="text-align: left;">
+<!-- count -->
+<div class="search_title clearfix" node-type="msg_operation">
+
+</div>
+<!-- /count --> 
+<!--send-->
+<div class="send_private_msg" node-type="publisher_wrap">
+ <dl class="private_SRLr clearfix">
+  <div class="title">发{echo:lp{m_title};/}给：<span class="name">{echo:$touser["user_name"];/}</span></div>
+  <div style="display: block;" node-type="num" class="num"></div>
+  <dt class="headportrait"><a title="{echo:$user_name;/}" href="home.php?h={echo:$user_id;/}" target="_blank">
+  <img alt="" src="{echo:str_replace("_small","_small",$user_ico);/}" height="50" width="50"></a></dt>
+  <dd class="W_border content">
+ <div class="R_msg">
+  <div class="private_operate">
+  <form name="form1" onSubmit="return unitinfocheck();" method="post" action="do.php?act=msg_crt">
+  	<input name="msToId" id="msToId" type="hidden" value="{echo:$touser["user_id"];/}" />
+  	<input name="nw" id="nw" type="hidden" value="3" />
+   <textarea name="msContent" id="msContent" cols="" rows="" class="textarea2" style=" resize: none;margin: 0px; padding: 0px; border-color: rgb(255, 255, 255); border-style: solid; border-width: 1px; font-size: 12px; font-family: Tahoma,宋体; word-wrap: break-word; line-height: 18px; overflow: hidden; outline: medium none; height: 36px;width:100%" range="0&amp;0"></textarea>
+  </form>
+   <div node-type="successTip" style="display: none;" class="send_succpic"></div>
+  </div>
+  <div class="send_handle W_linecolor clearfix">
+   <div class="btn_s">
+   <a href="javascript:sendmsg();" class="W_btn_b btn_noloading" node-type="publishBtn"><span><b class="loading"></b><em node-type="btnText">发送</em></span></a>
+   </div>
+   <div node-type="widget" class="kind">
+  </div>
+  </div>
+  <div class="send_p_list">
+  <ul swfid="7033" class="send_list clearfix" node-type="uploadList" style="display: none;" fid="">
+  </ul>
+  </div>
+ </div>
+ <div class="arrow"></div>
+  </dd>
+ </dl>
+</div>
+<!--/send-->
+<!--list-->
+<div node-type="messageList" pagenumber="1" class="private_shresults">
+{sta:foreach($msg_inbox_rs as $row)[loop]}
+	{sta:if($row['user_id']."to".$row['from_user_id']==$row['mess_title'])[exc]}{sta:$toarrow='r';/}{end:if/}
+	{sta:if($row['from_user_id']."to".$row['user_id']==$row['mess_title'])[exc]}{sta:$toarrow='l';/}{end:if/}
+    <dl class="private_SRL{echo:$toarrow;/} clearfix" node-type="msgList">
+	  <dt class="face">
+	  {sta:if($toarrow=='r')[exc]}
+	  <a title="{echo:$user_name;/}" href="home.php?h={echo:$user_id;/}" target="_blank">
+  <img alt="" src="{echo:str_replace("_small","_small",$user_ico);/}" height="50" width="50"></a>
+	  {end:if/}
+	  {sta:if($toarrow=='l')[exc]}
+	  <a title="{echo:$touser["user_name"];/}" href="home.php?h={echo:$touser["user_id"];/}">
+	  <img alt="" src="{echo:str_replace("_small","_small",$touser['user_ico']);/}" height="50" width="50"></a>
+	  {end:if/}
+	  </dt>
+	  <dd class="W_border content">
+	  	  	   	 <div class="R_msg" node-type="msgDetail" is-send="0" create-at="1335154390">
+	  <div class="private_operate clearfix">
+	   <div class="close"><a href="javascript:void(0);" title="删除" class="hover W_close_color" action-type="delMessage" action-data="mid=3437949046153103&amp;is_send=0&amp;msgList=3437949046153103"></a></div>
+	   <div class="txt" node-type="messageBox" id="msg_3437949046153103" action-data="mid=3437949046153103&amp;is_send=0">
+	  {sta:if($toarrow=='r')[exc]}
+	  我
+	  {end:if/}
+	  {sta:if($toarrow=='l')[exc]}
+	  <a href="home.php?h={echo:$touser['user_id'];/}">{echo:$touser["user_name"];/}</a>
+	  {end:if/}
+	   
+	   
+	   
+	   ：{echo:$row["mess_content"];/}</div> 
+	   <div class="operation"><div class="fl"><em class="W_textb date" href="">{echo:$row["add_time"];/}</em></div><div class="fr"></div></div>
+	   </div>
+	   <dl class="private clearfix">
+	   <dd class="piclist">
+	   
+	   </dd>
+	  </dl>
+	 </div>
+	 	<div class="arrow"></div>
+	  </dd>
+	 </dl>
+
+{end:foreach/}
+ </div>
+	 	 <!--/list-->
+</div>
+{echo:page_show($isNull,$page_num,$page_total);/}
+<div class="guide_info {echo:$content_data_none;/}">
+	{echo:lp{m_in_none};/}
+</div>
+</body>
+</html>

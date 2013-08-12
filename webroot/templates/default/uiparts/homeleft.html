@@ -1,0 +1,153 @@
+<script type='text/javascript' language="javascript">
+function goLogin(){
+	Dialog.confirm("{echo:lp{pu_login};/}",function(){top.location="{echo:$indexFile;/}";});
+}
+
+function mypalsAddInit(other_id)
+{
+	  var mypals_add=new Ajax();
+	  mypals_add.getInfo("do.php","GET","app","act=add_mypals&other_id="+other_id,function(c){if(c=="success"){Dialog.alert("{echo:lp{ah_friends_add_suc};/}");}else{Dialog.alert(c);}});
+}
+function hi_action_int(){
+	{echo:$send_hi;/};
+}
+
+function report_action_int(){
+	{echo:$send_report;/}
+}
+
+function report_action(type_id,user_id,mod_id){
+	var diag = new Dialog();
+	diag.Width = 300;
+	diag.Height = 150;
+	diag.Top="50%";
+	diag.Left="50%";
+	diag.Title = "{echo:lp{pu_report};/}";
+	diag.InnerHtml= '<div class="report_notice">{echo:lp{pu_report_info};/}{echo:lp{pu_report_re};/}<textarea id="reason"></textarea></div>';
+	diag.OKEvent = function(){act_report(type_id, user_id, mod_id);diag.close();};
+	diag.show();
+}
+
+function hi_action(uid){
+	var diag = new Dialog();
+	diag.Width = 330;
+	diag.Height = 150;
+	diag.Top="50%";
+	diag.Left="50%";
+	diag.Title = "{echo:lp{u_choose_type};/}";
+	diag.InnerHtml= '{echo:hi_window();/}';
+	diag.OKEvent = function(){send_hi(uid);diag.close();};
+	diag.show();
+}
+
+function send_hi_callback(content){
+	if(content=="success"){
+		Dialog.alert("{echo:lp{hi_success};/}");
+	}else{
+		Dialog.alert(content);
+	}
+}
+
+function send_hi(uid){
+	var hi_type=document.getElementsByName("hi_type");
+	for(def=0;def<hi_type.length;def++){
+		if(hi_type[def].checked==true){
+			var hi_t=hi_type[def].value;
+		}
+	}
+	var get_album=new Ajax();
+	get_album.getInfo("do.php","get","app","act=user_add_hi&to_userid="+uid+"&hi_t="+hi_t,function(c){send_hi_callback(c);});
+}
+</script>
+<div class="homeside">
+	
+	{sta:if($is_self=='N')[exc]}
+
+	{end:if/}
+
+	<!-- plugins !-->
+	<div class='home_info_bottom'>
+		{echo:isset($plugins['home_info_bottom'])?show_plugins($plugins['home_info_bottom']):'';/}
+	</div>
+	<!-- plugins !-->	
+<div class="main_left">
+	<div class="hcolor" id="msgbox">
+<div class="td">
+<a href="javascript:void(0);" hidefocus="true" title="提醒"><span class="icon_small icon_info"></span>
+</a>
+</div>
+
+<div id="msginfo">
+{sta:if(get_sess_userid()>0)[exc]}
+<iframe onload="this.height=56" id="remind" style="width: 120px;" name="remind" src="modules.php?app=remind" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+{end:if/}
+</div>
+	</div>
+	
+	<div class="clear"></div>
+	<div id="menu">
+<div class="td">
+<a href="javascript:void(0);" onclick="location.href='{echo:$siteDomain;/}main.php?';return false;"  hidefocus="true" title="首页"><span class="icon_small icon_home"></span>
+</a>
+</div>
+<div class="td tip">
+<a href="javascript:void(0);" onclick="location.href='{echo:$siteDomain;/}main.php?app=mypals_invite';return false;"  hidefocus="true" title="邀请"><span class="icon_small icon_invite"></span>
+</a>
+</div>
+<div class="td tip">
+<a href="javascript:void(0);" onclick="location.href='{echo:$siteDomain;/}main.php?app=user_info';return false;"  hidefocus="true" title="设置"><span class="icon_small icon_user"></span>
+</a>
+</div>
+	</div>
+	<div class="clear"></div>
+	<div class="usershow">
+	<table style="width:171px">
+	<tr>
+	<td colspan="2">
+	
+	<div style="display:block;line-height:12px;">
+	{echo:$user_info['cn_name'];/}&nbsp;
+	<div style="height:12px;display:inline;padding:3px 0 0 0;" title="{echo:count_level($user_info['integral']);/}">
+		{echo:grade($user_info['integral']);/}
+	</div>
+	</div>
+
+	</td>
+	</tr>
+	<tr>
+	<td style="width:169px" colspan="2"><a class="figure"><img src="{echo:str_replace("_small","",$user_info['user_ico']);/}" /></a></td>
+	  <!-- 
+	<td width="48px" style="">
+	<div style="height:123px;padding:0 0 0 4px;">
+	<ul>
+	  <li><span class="userstatus2">{echo:$ol_state_label;/}</span></li>
+      <li><a href="{echo:$send_msgscrip;/}" target="frame_content">问候</a></li>
+      <li><a href="javascript:void(0);" onclick="report_action_int();">{echo:lp{ah_report_user};/}</a></li>
+      <li><a href="javascript:;" onclick="frame_content.location.href='modules.php?app=mood_more&user_id={echo:$holder_id;/}'">{echo:lp{pr_type_6};/}</a></li>
+      <li><a href="javascript:void(0);" onclick="frame_content.location.href='{echo:$siteDomain;/}modules.php?app=blog_list&user_id={echo:$holder_id;/}';return false;" hidefocus="true">公告</a></li>
+	</ul>
+	</div>
+	</td>
+	   -->
+	</tr>
+	<tr>
+	<td>{sta:if($is_self=='N')[exc]}<a href="{echo:$add_friend;/}" class="addfriend2">交换名片</a>{end:if/}</td>
+	<td>&nbsp;</td>
+	</tr>
+	</table>
+	</div>
+	<!-- 
+	<p class="ccolor">
+		<a href="{echo:$siteDomain;/}modules.php?app=buscard"  hidefocus="true" title="名片夹" target="_blank"><span class="icon_menu icon_mcard"></span></a>
+		<br><span class="txt13b">名片夹 </span><span class="info">{echo:get_session('pals_count');/}张名片</span>
+	</p>
+	<p class="ccolor">
+		<a href="javascript:void(0);" onclick="frame_content.location.href='{echo:$siteDomain;/}modules.php?app=blog_list';return false;" title="公告" hidefocus="true"><span class="icon_menu icon_mmsg"></span></a>
+		<br><span class="txt13b">公告 </span><span class="info">{echo:get_session('blog_count');/}个公告</span>
+	</p>
+	<p class="ccolor">
+		<a href="javascript:void(0);" onclick="frame_content.location.href='{echo:$siteDomain;/}modules.php?app=msg_mbox';return false;" title="对话" hidefocus="true"><span class="icon_mtalk"></span></a>
+		<br><span class="txt13b">对话 </span><span class="info">{echo:get_session('msg_count');/}个对话</span>
+	</p> -->
+</div>
+</div>

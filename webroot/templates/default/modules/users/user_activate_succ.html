@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<base href='{echo:$siteDomain;/}' />
+<link rel="stylesheet" href="skin/default/jooyea/css/layout.css" />
+<style>
+<!--
+.active .appbar{float:none;width:360px;margin:auto;padding: 8px 30px 8px 80px}
+.appbar tr{height:70px}
+.appbar .title{font-size:14px;font-weight:bold;font-style:normal;text-decoration:none;color:#0063B0;}
+.appbar .sn{margin:0px 0 0 0;text-align:left;}
+
+-->
+</style>
+</head>
+<body id="iframecontent">
+<div class="container">
+{inc:require('uiparts/createheader.php');/}
+    <div class="left " style="margin-left: 29px;width:462px;display:inline" >
+    	<div ><p class="tal" style="margin-top: 20px;">{echo:$user_cnname;/}&nbsp;<span style="color:#000">感谢你的注册</span></p></div>
+    	<div style="margin-top: 20px;">
+    	<a href="{sta:if(in_array($mail_add[2],array_keys($mail)))[exc]}{echo:$mail[$mail_add[2]];/}{end:if/}{sta:if(!in_array($mail_add[2],array_keys($mail)))[exc]}{echo:'http://www.'.$mail_add[2];/}{end:if/}" class="mail_sess_but">
+    	<div style="height:31px;width:209px;background-color:#0063B0;border:#797979 1px solid;" class="left">
+    	前往邮箱，认证帐户
+    	</div>
+    	</a>
+    	<a href="main.php" class="mail_sess_but" style="">
+    	<div style="height:31px;width:209px;background-color:#0063B0;border:#797979 1px solid;;margin-left: 40px;" class="left">
+    	暂不认证，进入使用
+    	</div>
+    	</a>
+    	</div>
+    	<div class="clear"></div>
+    	<div class="mail_step" style="margin:7px 0 0 0 ;">
+    	<p class="txt">如果你没有收到邮件：</p>
+        <ul>
+            <li>＊或许到垃圾邮件目录里碰磁运气</li>
+            <li>＊也可以选择用注册邮箱向 hi@officin.com.cn 发送一封任意邮件，也可完成认证．</li>
+            <li>或者再次<a style="text-decoration: underline;" href='do.php?act=user_activation&user_email={echo:$user_email;/}'>重新发送激活邮件</a></li>
+        </ul>
+    </div>
+    </div>
+    <div class="left" style="width:459px;display:inline">
+    <div ><p class="tal" style="margin-top: 20px;color:#000">功能简介</p></div>
+    <div class="active">
+    	<div class="appbar">
+    		<table>
+    		<tr><td width="60px">
+<a hidefocus="true" onclick="frame_content.location.href='http://localhost/intouch.net.cn/modules.php?app=blog_list';return false;" href="javascript:void(0);">
+<span class="icon_card icon_big">&nbsp;</span>
+</a>
+    		</td><td width="60px" class="title">名片夹</td><td>
+<p class="sn">在线管理/更新/交换/引荐名片，建立和拓展工作人脉网络。</p>
+    		</td></tr>
+    		<tr><td>
+<a hidefocus="true" onclick="frame_content.location.href='http://localhost/intouch.net.cn/modules.php?app=blog_list';return false;" href="javascript:void(0);">
+<span class="icon_blog icon_big">&nbsp;</span>
+</a>
+    		</td><td class="title">公&nbsp;告</td><td>
+<p class="sn">将不同的信息针对性推送给不同的客户/同事/朋友，形成私密/高效的工作资讯平台。</p>
+    		</td></tr>
+    		<tr><td>
+<a hidefocus="true" onclick="frame_content.location.href='http://localhost/intouch.net.cn/modules.php?app=blog_list';return false;" href="javascript:void(0);">
+<span class="icon_friend icon_big">&nbsp;</span>
+</a>
+    		</td><td class="title">对&nbsp;话</td><td>
+<p class="sn">与客户/同事/朋友第一时间在线交流，及时沟通，紧密联系。</p>
+    		</td></tr>
+			</table>
+		</div>
+    </div>
+</div>
+{inc:require('uiparts/footor.php');/}
+</body>
+</html>

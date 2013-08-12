@@ -1,0 +1,318 @@
+<script src="skin/default/js/login.js" language="javascript"></script>
+
+{inc:include("uiparts/defaultheader.php");/}
+<div id="home">
+<!-- content -->
+<div id="content">
+	<div id="banner" class="left">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		  <tr>
+		    <td height="71" align="left">
+		     <img src="skin/default/jooyea/images/u3_normal.png"/>   
+		    </td>
+		  </tr>
+		  <tr >
+		    <td >
+		    	<div id="logotitle_index" class="left">The Social Network For Job</div>
+
+		    	<h2 class="title left" style="color:#000;height: 41px;font-size:20px;line-height:41px;">为工作而存在的社交网络</h2>
+		    </td>
+		  </tr>
+		</table>
+	</div>
+	<div id="login" class="left">
+<div id="login_m">
+	<h2>登录<span id="login_msg" class="red"></span></h2>
+     <form name="login_form" method="post" onsubmit="return false;">
+         <p>
+         <input class="input" name="login_email" id="login_email" type="text" placeholder="邮箱"/></p>
+         <p>
+         <input class="pwd" name="login_pws" id="login_pws" type="password" placeholder="密码"/>
+         <input type="submit" onclick="login();" class="icon_login_w icon_wp_big"  name="loginsubm" id="loginsubm" hidefocus="true" value=" " />
+         </p>
+         <p class="chk">
+             <label for="tmpiId">
+                 <input name="tmpiId" class="chk" id="tmpiId" type="checkbox" value="save" checked="checked" onKeyDown="getEnt();">
+                 {echo:lp{l_save_aco};/}
+             </label>
+             <!--  
+             <label for="hidden">
+             	<input name="hidden" class="chk" id="hidden" type="checkbox" value="1" onKeyDown="getEnt();">
+             	{echo:lp{l_hid};/}
+             </label>-->
+             <span><a href="modules.php?app=user_forget" class="forget">{echo:lp{ah_forgot_password};/}？</a></span>
+         </p>
+     </form>
+</div>
+<div id="login_reg">
+	<h2>注册 <span id="reg_msg" class="red"></span></h2>
+    <form action="javascript:void(0);" id="reg_form" name="reg_form" method="post" onSubmit="return checkForm();">
+      <input type='hidden' name='invite_code' value='{echo:$invite_code;/}' />
+      <p><input class="input" name="user_email" id="user_email" type="text" placeholder="邮箱"/></p>
+      <p><input class="pwd" name="user_password" id="user_password" type="password" placeholder="密码"/></p>
+      <p><input class="pwd" name="user_repassword" id="user_repassword" type="password" placeholder="确认密码"/>
+      <input class="icon_reg_w icon_wp_big" type="submit" value=" " /></p>
+      <p><span class="forget">{echo:lp{u_reg_accepted};/}<a href="javascript:ser_item();">{echo:lp{u_reg_user_agreement};/}</a>{echo:lp{u_reg_and};/}{echo:lp{u_reg_registration};/}</span>
+      </p>
+    </form>
+</div>
+	</div>
+</div>
+<!-- content end-->
+
+<script language="javascript"><!--
+function goLogin(){
+	Dialog.confirm("{echo:lp{pu_login};/}",function(){top.location="{echo:$indexFile;/}";});
+}
+function getEnt(){
+	document.onkeydown = function (e){
+		var theEvent = window.event || e;
+		var code = theEvent.keyCode || theEvent.which;
+		if(code == 13){
+			  login();
+		}
+	}
+}
+function inputTxt(obj,act)
+{
+  var str="{echo:lp{ah_enter_name};/}";
+  if(obj.value==''&&act=='set')
+  {
+     obj.value=str;
+     obj.style.color='#cccccc';
+  }
+  if(obj.value==str&&act=='clean')
+  {
+     obj.value='';
+     obj.style.color='gray';
+  }
+}
+//ajax
+function login_callback(content)
+{
+	var check=/\.php/;
+	if(check.test(content)){
+		 if($("tmpiId").checked){
+			saveTmpEmail(1);
+		 }else{
+			  saveTmpEmail(0);
+		 }
+		 window.location.href=content;
+	}else{
+		$("login_msg").innerHTML = '';
+		//$("pwdmsg").innerHTML = '';
+		//$("loadingmsg").innerHTML = '';
+		var return_array=content.split("|");
+		if(return_array[0]=='active'){
+			window.location.href="modules.php?app=user_activation";
+		}else {
+			$("login_msg").style.color = 'red';
+			$("login_msg").innerHTML = return_array[1];
+		}
+	}
+}
+function login_unready_callback(){
+	var argb_div = $("login_msg");
+	//if($("emailmsg").innerHTML == '' || $("pwdmsg").innerHTML == ''){
+	//	argb_div.innerHTML='';
+	//}else{
+	//}
+		argb_div.innerHTML="<img src='skin/default/jooyea/images/login_loading.gif' align='top' >{echo:lp{l_loading};/}";
+}
+function saveTmpEmail(para){
+	var email_time=new Date();
+	var login_time=new Date();
+	email_time.setTime(email_time.getTime() +3600*1000*24*300 );
+	login_time.setTime(login_time.getTime() +3600*250 );
+	if(para==1){
+		var uemailStr=$("login_email").value;
+		document.cookie='iweb_email='+uemailStr+';expires='+ email_time.toGMTString();
+	}
+	document.cookie="IsReged=Y;expires="+ login_time.toGMTString();
+}
+function login(){
+	u_email=$('login_email').value;
+	u_pws=$('login_pws').value;
+	u_hidden=0;
+	u_tmpid=0;
+//	if($('hidden').checked){
+//		u_hidden=1;
+//	}
+	if($('tmpiId').checked){
+		u_tmpid=1;
+	}
+	var ajax_login=new Ajax();
+	ajax_login.getInfo("do.php?act=login","post","app","u_email="+u_email+"&u_pws="+u_pws+"&hidden="+u_hidden+"&tmpid="+u_tmpid,function(c){login_callback(c);},function(){login_unready_callback();});
+}
+//取得cookie值
+$('login_email').value=get_cookie('iweb_email');
+--></script>
+<script language="JavaScript">
+// 检测会员用户名
+var user_name = document.getElementsByName('user_name')[0];
+var user_name_message = $('reg_msg');
+var user_name_status = false;
+var user_name_reg = /^[A-Za-z0-9\u4E00-\u9FA5]*$/;	//用正则表达式/[\u4E00-\u9FA5]/表示中文
+//user_name.onmouseover = function(){user_name.className = 'ipt ipt_focus'};
+//user_name.onmouseout = function(){user_name.className = 'ipt ipt_nomal'};
+//
+
+// 检测邮箱
+var user_email = document.getElementsByName('user_email')[0];
+var user_email_message = $('reg_msg');
+var user_email_status = false;
+var user_email_reg = /^[0-9a-zA-Z_\-\.]+@[0-9a-zA-Z_\-]+(\.[0-9a-zA-Z_\-]+)*$/;
+//user_email.onmouseover = function(){user_email.className = 'ipt ipt_focus'};
+//user_email.onmouseout = function(){user_email.className = 'ipt ipt_nomal'};
+user_email.onblur = function(){
+	if(user_email.value=='') {
+		//user_email.className = 'ipt ipt_focus'
+		user_email_message.style.color = 'red';
+		user_email_message.innerHTML = '* {echo:lp{u_reg_fill_email};/}';
+		user_email_status = false;
+	} else if(!user_email.value.match(user_email_reg)) {
+		//user_email.className = 'ipt ipt_error';
+		user_email.onmouseout = 'ipt ipt_error'
+		user_email_message.style.color = 'red';
+		user_email_message.innerHTML = '* {echo:lp{u_reg_email_format_error};/}';
+		user_email_status = false;
+	} else {
+		ajax_check(user_email,'email');
+	}
+};
+
+
+// 检测密码
+var user_password = document.getElementsByName('user_password')[0];
+var user_password_message = $('reg_msg');
+var user_password_status = false;
+//user_password.onmouseover = function(){user_password.className = 'ipt ipt_focus'};
+//user_password.onmouseout = function(){user_password.className = 'ipt ipt_nomal'};
+user_password.onblur = function(){
+	if(user_password.value=='') {
+		//user_password.className = 'ipt ipt_focus'
+		user_password_message.style.color = 'red';
+		user_password_message.innerHTML = '* {echo:lp{u_reg_fill_password};/}';
+		user_password_status = false;
+	} else if(user_password.value.length<6 || user_password.value.length>16) {
+		//user_password.className = 'ipt ipt_error'
+		user_password.onmouseout='ipt ipt_error';
+		user_password_message.style.color = 'red';
+		user_password_message.innerHTML = '* {echo:lp{u_reg_password_format_error};/}';
+		user_password_status = false;
+	} else {
+		//user_password.className = 'ipt ipt_nomal';
+		user_password_message.style.color = 'green';
+		user_password_message.innerHTML = '{echo:lp{u_reg_password_format_correct};/}';
+		user_password_status = true;
+	}
+};
+
+
+// 检测确认密码
+var user_repassword = document.getElementsByName('user_repassword')[0];
+var user_repassword_message = $('reg_msg');
+var user_repassword_status = false;
+//user_repassword.onmouseover = function(){user_repassword.className = 'ipt ipt_focus'};
+//user_repassword.onmouseout = function(){user_repassword.className = 'ipt ipt_nomal'};
+user_repassword.onblur = function(){
+	if(user_repassword.value=='') {
+		//user_repassword.className = 'ipt ipt_focus'
+		user_repassword_message.style.color = 'red';
+		user_repassword_message.innerHTML = '* {echo:lp{u_reg_confirm_password};/}';
+		user_repassword_status = false;
+	} else if(user_repassword.value!=user_password.value) {
+		//user_repassword.className = 'ipt ipt_error'
+		user_repassword.onmouseout='ipt ipt_error';
+		user_repassword_message.style.color = 'red';
+		user_repassword_message.innerHTML = '* {echo:lp{u_reg_password_inconsistent};/}';
+		user_repassword_status = false;
+	} else if(user_repassword.value.length<6 || user_repassword.value.length>16) {
+		//user_repassword.className = 'ipt ipt_error'
+		user_repassword.onmouseout='ipt ipt_error';
+		user_repassword_message.style.color = 'red';
+		user_repassword_message.innerHTML = '* {echo:lp{u_reg_password_format_error};/}';
+		user_repassword_status = false;
+	} else {
+		//user_repassword.className = 'ipt ipt_nomal'
+		user_repassword_message.style.color = 'green';
+		user_repassword_message.innerHTML = '{echo:lp{u_reg_cpassword_format_correct};/}';
+		user_repassword_status = true;
+	}
+};
+
+
+function checkForm(){
+	//user_name.onblur();
+	user_email.onblur();
+	user_password.onblur();
+	user_repassword.onblur();
+	//veriCode.onblur();
+	if( user_email_status && user_password_status && user_repassword_status ) {
+		$("reg_form").action="do.php?act=reg";
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function ser_item(){
+	var diag = new Dialog();
+	diag.Width = 700;
+
+	diag.Top=0;
+	diag.Left="50%";
+	diag.Title = "用户协议";
+	diag.InnerHtml= '<div style="text-align:left">{echo:$regInfo;/}</div>';
+	diag.OKEvent = function(){diag.close();};
+	diag.show();
+}
+
+
+function ajax_check(obj,type_id){
+	if(type_id=='email'){
+		div_value='user_email_message';
+		suc_str='{echo:lp{u_reg_email_available};/}';
+	}else{
+		div_value='user_veriCode_message';
+		suc_str='{echo:lp{u_reg_code_correct};/}';
+	}
+	var check=new Ajax();
+	check.getInfo("do.php","get","app","act=reg&ajax=1&"+$(obj).id+"="+$(obj).value,function(c){if(c){refuse_submit(type_id,c);}else{pass_submit(type_id,suc_str);}});
+}
+
+function refuse_submit(type_id,c){
+	if(type_id=='email'){
+		user_email_message.style.color = 'red';
+		user_email_message.innerHTML = c;
+		user_email_status = false;
+	}else{
+		veriCode_message.style.color = 'red';
+		veriCode_message.innerHTML = c;
+		user_veriCode_status = false;
+	}
+}
+
+function pass_submit(type_id,c){
+	if(type_id=='email'){
+		user_email_message.style.color = 'green';
+		user_email_message.innerHTML = c;
+		user_email_status = true;
+	}else{
+		veriCode_message.style.color = 'green';
+		veriCode_message.innerHTML = c;
+		user_veriCode_status = true;
+	}
+}
+jQuery(function(){
+jQuery('input[placeholder]').placeholder({
+  useNative: false, 
+  hideOnFocus: false, 
+  style: {
+    'textShadow': 'none', 
+    'height':'26px',
+    'line-height': '26px'
+  }
+});
+}); 
+</script>

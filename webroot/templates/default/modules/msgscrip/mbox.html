@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title></title>
+<base href='{echo:$siteDomain;/}' />
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/iframe.css"/>
+<link rel="stylesheet" type="text/css" href="skin/default/jooyea/css/message.css"/>
+<script language=JavaScript src="skin/default/js/jooyea.js"></script>
+<script type='text/javascript' src="servtools/ajax_client/ajax.js"></script>
+<script type='text/javascript'>
+	function check_form(){
+		var mail_array=document.getElementsByName('attach[]');
+		var num=mail_array.length;
+		var check_num=0;
+		for(array_length=0;array_length<num;array_length++){
+			if(mail_array[array_length].checked==true){
+				check_num++;
+			}
+		}
+		if(check_num==0){
+			parent.Dialog.alert('{echo:lp{m_none_wrong};/}');
+		}else{
+			parent.Dialog.confirm('{echo:lp{m_del_ask};/}',function(){document.forms[0].submit();});
+		}
+	}
+	function select_item(type_value){
+		var mail_array=document.getElementsByName('attach[]');
+		var num=mail_array.length;
+		for(array_length=0;array_length<num;array_length++){
+				if(document.getElementById('state_'+array_length).value==type_value){
+					mail_array[array_length].checked='checked';
+				}else{
+					mail_array[array_length].checked='';
+				}
+		}
+	}
+	function sendmsg(toid){
+		var content = $("msContent_"+toid);
+		url="do.php?act=msg_crt";
+		var get_album=new Ajax();
+		get_album.getInfo("do.php?act=msg_crt","post","app","nw=4&msToId="+toid+"&msContent="+content.value,function(c){sendmsg_callback(c,toid);});
+	}
+	function sendmsg_callback(c,toid){
+		//console.log(toid);
+		//console.log(c);
+		if(c == "回复成功"){
+		var content = $("msContent_"+toid);
+		
+		$('repay_back_'+toid).innerHTML = "回复："+content.value;
+		content.value = "";
+		hidden_obj('repay_'+toid);
+		show_obj('repay_back_'+toid);
+		}
+	}
+	function replay_show(id){
+		show_obj('repay_'+id);
+		hidden_obj('repay_back_'+id);
+	}
+	function replay_hidden(id){
+		hidden_obj('repay_'+id);
+		hidden_obj('repay_back_'+id);
+	}
+	
+	function hotkey(evt) 
+	{ 
+	//if(event.ctrlKey) 
+	//if(event.altKey) 
+	//var evt = window.event || arguments.callee.caller.arguments[0]; // 获取event对象
+	
+	var a=evt.keyCode; 
+	if(a==65) 
+	{ 
+	alert("你按了a键吧"); 
+	} 
+	}// end hotkey 
+
+	//document.onkeydown = function(e){hotkey(e);}; //当onkeydown 事件发生时调用hotkey函数 
+	
+	function keyUp(e) {
+　　     var currKey=0,e=e||event;
+　　     currKey=e.keyCode||e.which||e.charCode;
+　　     var keyName = String.fromCharCode(currKey);
+　　     alert("按键码: " + currKey + " 字符: " + keyName);
+　　 }
+　　 //document.onkeyup = keyUp;
+</script>
+
+</head>
+<body id="iframecontent">
+    <div class="create_button"><a href="modules.php?app=msg_creator">{echo:lp{m_creat};/}</a></div>
+    <h2 class="app_msgscrip item_bg">{echo:lp{m_title};/}</h2>
+<div style="text-align: left;">
+<div class="private_lists" >
+	<div node-type="messageList" node-data="pageNumber=1">
+	{sta:foreach($msg_inbox_rs as $row)[loop]}
+		{sta:if($row['user_id']."to".$row['to_user_id']==$row['mess_title'])[exc]}{sta:$toarrow='l';/}{end:if/}
+		{sta:if($row['to_user_id']."to".$row['user_id']==$row['mess_title'])[exc]}{sta:$toarrow='r';/}{end:if/}
+		<dl class="W_linecolor private_list clearfix" >
+		<dd class="close" action-type="delMessage" ></dd>
+		<dt class="face"><a target="_blank" href="home.php?h={echo:$row['to_user_id'];/}" class="im_status"><img alt="{echo:$row["to_user"];/}" src="{echo:str_replace("_small","_small",$row['to_user_ico']);/}" height="50" width="50"></a></dt>
+		<dd class="content">
+		<p>{sta:if($toarrow=='l') [exc]}发给 {end:if/}<a title="{echo:$row["to_user"];/}" href="home.php?h={echo:$row['to_user_id'];/}" target="_blank" >{echo:$row["to_user"];/}</a> ：{echo:$row["mess_content"];/}</p>
+		<p class="info W_linkb W_textb">
+	<span>
+	<a href="modules.php?app=msg_gbox&2id={echo:$row['to_user_id'];/}">共{echo:$row["count"];/}条{echo:lp{m_title};/}</a>
+	<i class="W_vline">|</i><a href="javascript:replay_show({echo:$row['to_user_id'];/})">回复</a>
+	</span>
+	<i class="date">{echo:$row["add_time"];/}</i>
+			</p>
+		</dd>
+		<!-- 回复 -->
+		<dd class="send_private_msg">
+		<div id="repay_back_{echo:$row['to_user_id'];/}" style="margin-left: 60px;display:none">OK</div>
+		<div id="repay_{echo:$row['to_user_id'];/}" class="W_border content" style="margin-left: 60px;display:none">
+		<div  class="R_msg" >
+  <div class="private_operate">
+  <form action="do.php?act=msg_crt" method="post" onsubmit="return unitinfocheck();" name="form1">
+   <textarea id="msContent_{echo:$row['to_user_id'];/}" name="msContent_{echo:$row['to_user_id'];/}" range="0&amp;0" style=" resize: none;margin: 0px; padding: 0px; border-color:#fff; border-style: solid; border-width: 1px; font-size: 12px; font-family: Tahoma,宋体; word-wrap: break-word; line-height: 18px; overflow: hidden; outline: medium none; height: 36px;width:100%" class="textarea2" rows="" cols="" ></textarea>
+  </form>
+   <div class="send_succpic" style="display: none;" node-type="successTip"></div>
+  </div>
+  <div class="send_handle W_linecolor clearfix">
+   <div class="btn_s">
+   <a node-type="publishBtn" class="W_btn_b btn_noloading" href="javascript:sendmsg({echo:$row['to_user_id'];/});"><span><b class="loading"></b><em node-type="btnText">发送</em></span></a>
+   <a node-type="publishBtn" class="W_btn_b btn_noloading" href="javascript:replay_hidden({echo:$row['to_user_id'];/});""><span><b class="loading"></b><em node-type="btnText">取消</em></span></a>
+   </div>
+   <div class="kind" node-type="widget">
+  </div>
+  </div>
+  <div class="send_p_list">
+  <ul fid="" style="display: none;" node-type="uploadList" class="send_list clearfix" swfid="7033">
+  </ul>
+  </div>
+ </div>
+ </div>
+		</dd>
+	</dl>
+	{end:foreach/}
+	</div>
+</div>
+</div>
+{echo:page_show($isNull,$page_num,$page_total);/}
+<div class="guide_info {echo:$content_data_none;/}">
+	{echo:lp{m_in_none};/}
+</div>
+</body>
+</html>
